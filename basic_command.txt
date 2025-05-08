@@ -1,2 +1,0 @@
-solve;
-display {j in STOCKS: y[j] = 1} y[j];
