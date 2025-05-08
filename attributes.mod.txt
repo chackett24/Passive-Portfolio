@@ -1,0 +1,40 @@
+# ---------------------
+# SETS
+# ---------------------
+set STOCKS;
+set FEATURES;
+
+# ---------------------
+# PARAMETERS
+# ---------------------
+param x_orig{STOCKS};                 # Original position
+param a{STOCKS, FEATURES};            # Attribute matrix
+param f{FEATURES};                    # Desired feature values
+
+# ---------------------
+# VARIABLES
+# ---------------------
+var x{STOCKS} >= 0;                   # Final weight in the index fund
+var y{STOCKS} >= 0;                   # Positive deviation
+var z{STOCKS} >= 0;                   # Negative deviation
+
+# ---------------------
+# OBJECTIVE
+# ---------------------
+minimize total_deviation:
+    sum {i in STOCKS} (y[i] + z[i]);
+
+# ---------------------
+# CONSTRAINTS
+# ---------------------
+subject to match_features {j in FEATURES}:
+    sum {i in STOCKS} a[i,j] * x[i] = f[j];
+
+subject to full_investment:
+    sum {i in STOCKS} x[i] = 1;
+
+subject to positive_deviation {i in STOCKS}:
+    x[i] - x_orig[i] <= y[i];
+
+subject to negative_deviation {i in STOCKS}:
+    x_orig[i] - x[i] <= z[i];
