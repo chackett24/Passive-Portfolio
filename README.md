@@ -1,4 +1,4 @@
-# Correlation-Based Index Fund Construction
+# Passive Portfolio/Index Creation
 
 This project investigates systematic methods for constructing simplified index-tracking portfolios. The goal is to create efficient, low-dimensional portfolios that closely approximate the behavior of broader market benchmarks, such as the S&P 100, while reducing the number of constituent assets.
 
