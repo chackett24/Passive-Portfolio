@@ -1,6 +1,6 @@
 set STOCKS := AMGN BAC BLK CMCSA CVX GD HD JNJ KO MSFT NVDA TMO V VZ WMT ;
 
-set FEATURES := SmallCap Tech Finance Healthcare Consumer Energy Industrial Domestic ;
+set FEATURES := LargeCap Tech Finance Healthcare Consumer Energy Industrial Domestic ;
 
 param x_orig :=
   AMGN 0.014337
@@ -20,7 +20,7 @@ param x_orig :=
   WMT 0.077609
 ;
 
-param a : SmallCap Tech Finance Healthcare Consumer Energy Industrial Domestic :=
+param a : LargeCap Tech Finance Healthcare Consumer Energy Industrial Domestic :=
 AMGN 1 0 0 1 0 0 0 1
 BAC 1 0 1 0 0 0 0 1
 BLK 1 0 1 0 0 0 0 1
@@ -39,7 +39,7 @@ WMT 1 0 0 0 1 0 0 1
 ;
 
 param f :=
-  SmallCap 1.000000
+  LargeCap 1.000000
   Tech 0.612488
   Finance 0.113655
   Healthcare 0.066813
