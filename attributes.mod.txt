@@ -9,7 +9,8 @@ set FEATURES;
 # ---------------------
 param x_orig{STOCKS};                 # Original position
 param a{STOCKS, FEATURES};            # Attribute matrix
-param f{FEATURES};                    # Desired feature values
+param f{FEATURES};                 # Desired feature values
+                    
 
 # ---------------------
 # VARIABLES
@@ -27,8 +28,8 @@ minimize total_deviation:
 # ---------------------
 # CONSTRAINTS
 # ---------------------
-subject to match_features {j in FEATURES}:
-    sum {i in STOCKS} a[i,j] * x[i] = f[j];
+subject to match_features{j in FEATURES}:
+     sum {i in STOCKS} a[i,j] * x[i] <= f[j];
 
 subject to full_investment:
     sum {i in STOCKS} x[i] = 1;
