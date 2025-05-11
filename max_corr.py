@@ -35,7 +35,7 @@ def max_corr_index(qs, ms):
                 window_returns = is_windows[i]
                 correlations = window_returns.corr()
 
-                with open("data.txt", "w") as f:
+                with open("ampl/mc_data.txt", "w") as f:
                     f.write("set STOCKS := " + " ".join(correlations.columns) + " ;\n\n")
                     f.write("param q := " + str(q) + " ;\n\n")
                     f.write("param r:\n    " + " ".join(correlations.columns) + " :=\n")
@@ -48,8 +48,8 @@ def max_corr_index(qs, ms):
                 ampl.setOption('solver', 'gurobi')
                 ampl.set_option('display_output', 0)
                 ampl.set_option('solver_msg', 0)
-                ampl.read("max_corr.txt")
-                ampl.read_data("data.txt")
+                ampl.read("ampl/mc_mod.txt")
+                ampl.read_data("ampl/mc_data.txt")
                 ampl.solve()
                 y = ampl.get_variable("y").get_values().to_pandas()
                 selected = y[y["y.val"] == 1]

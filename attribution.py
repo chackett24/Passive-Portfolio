@@ -62,7 +62,7 @@ def attribute_index(qs, ms):
                 tickers = list(correlations.columns)
 
                 # Step 1: run max_corr to select q tickers
-                with open("data.txt", "w") as f:
+                with open("ampl/mc_data.txt", "w") as f:
                     f.write("set STOCKS := " + " ".join(tickers) + " ;\n\n")
                     f.write("param q := " + str(q) + " ;\n\n")
                     f.write("param r:\n    " + " ".join(tickers) + " :=\n")
@@ -75,8 +75,8 @@ def attribute_index(qs, ms):
                 ampl.set_option('display_output', 0)
                 ampl.set_option('solver_msg', 0)
                 ampl.setOption("solver", "gurobi")
-                ampl.read("max_corr.txt")
-                ampl.readData("data.txt")
+                ampl.read("ampl/mc_mod.txt")
+                ampl.readData("ampl/mc_data.txt")
                 ampl.solve()
 
                 y = ampl.getVariable("y").getValues().to_pandas()
@@ -105,7 +105,7 @@ def attribute_index(qs, ms):
                 target_dict = {feat: fixed_target_dict[feat] for feat in available if feat in fixed_target_dict}
 
                 # Write full SP100 attribution file
-                with open("attributes.dat", "w") as f:
+                with open("ampl/attributes.dat", "w") as f:
                     f.write("set STOCKS := " + " ".join(all_sp100_tickers) + " ;\n\n")
                     f.write("set FEATURES := " + " ".join(available) + " ;\n\n")
 
@@ -129,8 +129,8 @@ def attribute_index(qs, ms):
                 ampl.set_option('display_output', 0)
                 ampl.set_option('solver_msg', 0)
                 ampl.setOption("solver", "gurobi")
-                ampl.read("attributes.mod.txt")
-                ampl.readData("attributes.dat")
+                ampl.read("ampl/attributes.mod.txt")
+                ampl.readData("ampl/attributes.dat")
                 ampl.solve()
 
                 x = ampl.getVariable("x").getValues().to_pandas()
