@@ -9,6 +9,7 @@ def attribute_index(qs, ms):
     correlations_dict = {}
     returns = pd.read_csv("data/returns.csv", index_col=0)
     sp100_returns = pd.read_csv("data/sp100returns.csv")
+    market_caps_dict = pd.read_csv("data/market_caps.csv", index_col=0)["MarketCap"].to_dict()
     combined = sp100_returns[['Portfolio_Return']].rename(columns={'Portfolio_Return': 'SP100'})
 
     binary_df = pd.read_csv("data/ticker_attributes.csv").set_index("Ticker")
@@ -87,13 +88,7 @@ def attribute_index(qs, ms):
                     continue
 
                 # Market cap weights on selected tickers
-                market_caps = {}
-                for ticker in selected:
-                    try:
-                        info = yf.Ticker(ticker).info
-                        market_caps[ticker] = info.get('marketCap', 0)
-                    except:
-                        market_caps[ticker] = 0
+                market_caps = {ticker: market_caps_dict.get(ticker, 0) for ticker in selected}
                 total_cap = sum(market_caps.values())
                 weights = {t: market_caps[t] / total_cap if total_cap > 0 else 0 for t in selected}
 

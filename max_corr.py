@@ -7,6 +7,7 @@ def max_corr_index(qs, ms):
     correlations_dict = {}
     returns = pd.read_csv("data/returns.csv", index_col=0)
     sp100_returns = pd.read_csv('data/sp100returns.csv')
+    market_caps_dict = pd.read_csv("data/market_caps.csv", index_col=0)["MarketCap"].to_dict()
     combined = sp100_returns[['Portfolio_Return']].rename(columns={'Portfolio_Return': 'SP100'})
     for m in ms:
         # Prepare out-of-sample data
@@ -58,13 +59,7 @@ def max_corr_index(qs, ms):
             # WEIGHTS HERE
             periods_all, tickers_all, weights_all = [], [], []
             for i in range(m):
-                market_caps = {}
-                for ticker in results[i]:
-                    try:
-                        info = yf.Ticker(ticker).info
-                        market_caps[ticker] = info.get('marketCap', 0)
-                    except Exception as e:
-                        market_caps[ticker] = 0
+                market_caps = {ticker: market_caps_dict.get(ticker, 0) for ticker in results[i]}
                 total_market_value = sum(market_caps.values())
                 for ticker in results[i]:
                     cap = market_caps[ticker]
